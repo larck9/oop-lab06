@@ -22,13 +22,14 @@ public final class ArithmeticUtil {
         Objects.requireNonNull(data);
         try {
             // Much better with a regex-match on "[-+]?\\d*\\.?\\d+([eE][-+]?\\d+)?"
-            if (Double.isFinite(parseDouble(data))) {
+            if (Double.isFinite(parseDouble(data))) {      
                 return null;
             } else {
-                return new NumberFormatException(data + " is not a finite number");
+                return new NumberFormatException(data + " is not a finite number");     //only executes if the number is successfully parsed but is not finite, meaning it's either Infinity or NaN.
             }
         } catch (final NumberFormatException e) {
             return e; // NOPMD
         }
     }
 }
+
