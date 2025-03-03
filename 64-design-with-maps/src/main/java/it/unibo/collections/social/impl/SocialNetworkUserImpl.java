@@ -7,7 +7,7 @@ package it.unibo.collections.social.impl;
 import it.unibo.collections.social.api.SocialNetworkUser;
 import it.unibo.collections.social.api.User;
 
-import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,7 +38,8 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
      *
      * think of what type of keys and values would best suit the requirements
      */
-
+    private final static int DEF_AGE=-1;
+     Map<String,Set<U>> userMap =new HashMap<>();    //mappa -> , mappa di nomegruppo e set utenti
     /*
      * [CONSTRUCTORS]
      *
@@ -64,12 +65,16 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
      *            application
      */
     public SocialNetworkUserImpl(final String name, final String surname, final String user, final int userAge) {
-        super(null, null, null, 0);
+        super(name, surname, user, userAge);
     }
 
     /*
      * 2) Define a further constructor where the age defaults to -1
      */
+
+     public SocialNetworkUserImpl(final String name, final String surname, final String user) {
+        super(name, surname, user, DEF_AGE);
+    }
 
     /*
      * [METHODS]
@@ -77,9 +82,18 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
      * Implements the methods below
      */
     @Override
-    public boolean addFollowedUser(final String circle, final U user) {
-        return false;
+    
+    public boolean addFollowedUser(final String group, final U user) {
+    if (group == null || user == null) {
+        return false; // Null values are not allowed
     }
+    
+    // Create the group if it does not exist
+    userMap.putIfAbsent(group, new HashSet<>());
+   
+    // Try to add the user to the group
+    return userMap.get(group).add(user); // Returns true only if user was not already present
+}
 
     /**
      *
@@ -88,11 +102,21 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
      */
     @Override
     public Collection<U> getFollowedUsersInGroup(final String groupName) {
-        return null;
+        if (!userMap.containsKey(groupName) || groupName ==null){
+            return Collections.emptyList();
+        }
+        else{
+            return new HashSet<>(userMap.get(groupName));
+        }
+        
     }
 
     @Override
     public List<U> getFollowedUsers() {
-        return null;
+        Set<U> res = new HashSet<>();
+        for (Set<U> group:userMap.values()){
+            res.addAll(group);
+        }
+        return List.copyOf(res);
     }
 }

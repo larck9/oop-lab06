@@ -51,15 +51,15 @@ public final class TestSocialNetworkUser {
          *
          * * Adam Smith, asmith, (no age)
          */
-        final SocialNetworkUser<User> kbacon = null; //TODO
-        final SocialNetworkUser<User> dwashington = null; //TODO
-        final SocialNetworkUser<User> mgladwell = null; //TODO
-        final SocialNetworkUser<User> ntaleb = null; //TODO
-        final User asmith = null; //TODO
+        final SocialNetworkUser<User> kbacon = new SocialNetworkUserImpl<>("Kevin","Bacon", "kbacon", 56);
+        final SocialNetworkUser<User> dwashington = new SocialNetworkUserImpl<>("Denzel", "Washington", "dwashington", 59);
+        final SocialNetworkUser<User> mgladwell = new SocialNetworkUserImpl<>("Malcom", "Gladwell", "mgladwell", 51); 
+        final SocialNetworkUser<User> ntaleb = new SocialNetworkUserImpl<>("Nicholas", "Taleb", "ntaleb", 54);
+        final User asmith = new UserImpl("Adam","Smith","asmith");
         /*
          * Make people follow each other
          */
-        mgladwell.addFollowedUser("acquaintances", ntaleb);
+        mgladwell.addFollowedUser("acquaintances", ntaleb);      //
         dwashington.addFollowedUser("myths", asmith);
         dwashington.addFollowedUser(WRITERS, ntaleb);
         dwashington.addFollowedUser("colleagues", kbacon);
@@ -82,10 +82,7 @@ public final class TestSocialNetworkUser {
          * The above operation *MUST* have no effect on Denzel's profile itself:
          * STILL TWO PEOPLE in denzel's group called writers
          */
-        assertTrue(
-            "Denzel has STILL 2 followed people in group \"" + WRITERS + "\"",
-            dwashington.getFollowedUsersInGroup(WRITERS).size() == 2
-        );
+        assertTrue("Denzel has STILL 2 followed people in group \"" + WRITERS + "\"", dwashington.getFollowedUsersInGroup(WRITERS).size() == 2);
     }
 
     private static void assertTrue(final String message, final boolean value) {
