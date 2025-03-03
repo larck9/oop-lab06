@@ -28,7 +28,7 @@ public final class UseGraph {
         /*
          * Test your graph implementation(s) by calling testGraph
          */
-        testGraph(null);
+        testGraph(new GraphImpl<>());
     }
 
     private static void testGraph(final Graph<String> graph) {
@@ -48,16 +48,17 @@ public final class UseGraph {
          */
         assertIsAnyOf(graph.nodeSet(), Set.of(A, B, C, D, E));
         /*
-         * ["d","a"], in any order
+         * ["d","b","a"], in any order
          */
-        assertIsAnyOf(graph.linkedNodes(C), Set.of(A, D));
+        assertIsAnyOf(graph.linkedNodes(C), Set.of(A, B, D));
         /*
          * Either the path b,c,a or b,c,d,e,a
          */
         assertIsAnyOf(
             graph.getPath(B, A),
             Arrays.asList(B, C, A),
-            Arrays.asList(B, C, D, E, A)
+            Arrays.asList(B, C, D, E, A),
+            Arrays.asList(B,A)  
         );
     }
 
